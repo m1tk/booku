@@ -14,11 +14,11 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableQuery = "CREATE TABLE "+bookDAO.TABLE_NAME+" (" +
-                bookDAO.COLUMN_ID+" INTEGER PRIMARY KEY AUTOINCREMENT," +
-                bookDAO.COLUMN_ISBN+" TEXT NOT NULL," +
-                bookDAO.COLUMN_NAME+" TEXT NOT NULL," +
-                "unique("+bookDAO.COLUMN_ISBN+"));";
+        String createTableQuery = "CREATE TABLE "+ BookDAO.TABLE_NAME+" (" +
+                BookDAO.COLUMN_ID+" INTEGER PRIMARY KEY AUTOINCREMENT," +
+                BookDAO.COLUMN_ISBN+" TEXT NOT NULL," +
+                BookDAO.COLUMN_NAME+" TEXT NOT NULL," +
+                "unique("+ BookDAO.COLUMN_ISBN+"));";
         db.execSQL(createTableQuery);
     }
 

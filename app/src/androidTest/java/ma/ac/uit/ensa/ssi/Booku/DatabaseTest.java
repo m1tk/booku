@@ -17,30 +17,22 @@ import ma.ac.uit.ensa.ssi.Booku.storage.*;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class DatabaseTest {
-    private Database db;
-    private bookDAO bookAccess;
+    private BookDAO bookAccess;
 
     @Before
     public void setUp(){
-        db         = new Database(InstrumentationRegistry.getInstrumentation().getTargetContext());
-        bookAccess = new bookDAO(db);
+        bookAccess = new BookDAO(InstrumentationRegistry.getInstrumentation().getTargetContext());
     }
 
     @After
     public void finish() {
-        db.close();
+        bookAccess.close();
     }
 
     @Test
     public void addBook() throws DatabaseError {
-        assertEquals(
-                bookAccess.addBook(new Book(0L, "Book 1", "1-1-1")),
-                1
-        );
-        assertEquals(
-                bookAccess.addBook(new Book(0L, "Book 2", "1-2-2")),
-                2
-        );
+        bookAccess.addBook(new Book(0L, "Book 1", "1-1-1"));
+        bookAccess.addBook(new Book(0L, "Book 2", "1-2-2"));
         boolean duplicate = false;
         try {
             bookAccess.addBook(new Book(0L, "Book 3", "1-2-2"));

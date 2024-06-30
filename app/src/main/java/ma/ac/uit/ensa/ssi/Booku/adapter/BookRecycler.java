@@ -1,7 +1,7 @@
 package ma.ac.uit.ensa.ssi.Booku.adapter;
 
 import android.content.Context;
-import android.util.Log;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +15,29 @@ import java.util.List;
 
 import ma.ac.uit.ensa.ssi.Booku.R;
 import ma.ac.uit.ensa.ssi.Booku.model.Book;
-import ma.ac.uit.ensa.ssi.Booku.storage.bookDAO;
+import ma.ac.uit.ensa.ssi.Booku.storage.BookDAO;
+import ma.ac.uit.ensa.ssi.Booku.utils.OnItemSelectedListener;
 
 public class BookRecycler extends RecyclerView.Adapter<BookHolder> {
-    private bookDAO bookaccess;
-    private List<Book> books;
+    private final BookDAO bookaccess;
+    private final List<Book> books;
 
-    public BookRecycler(bookDAO bookaccess) {
+    private final Context ctx;
+
+    private int selectedItem = RecyclerView.NO_POSITION;
+
+    private final OnItemSelectedListener listener;
+
+    public BookRecycler(Context ctx, OnItemSelectedListener listener, BookDAO bookaccess) {
         this.bookaccess = bookaccess;
         this.books      = this.bookaccess.getAllBooks();
+        this.ctx        = ctx;
+        this.listener   = listener;
+    }
+
+    public void addBook(Book book) {
+        books.add(0, book);
+        this.notifyItemInserted(0);
     }
 
     @NonNull
@@ -41,9 +55,45 @@ public class BookRecycler extends RecyclerView.Adapter<BookHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BookHolder holder, int position) {
-        Book book = books.get(position);
+    public void onBindViewHolder(@NonNull BookHolder holder, int view) {
+        Book book = books.get(holder.getAdapterPosition());
         holder.text.setText(book.getName() + "\n" + book.getIsbn());
+
+        holder.itemView.setOnLongClickListener(v -> {
+            if (selectedItem != holder.getAdapterPosition()) {
+                int previousSelected = selectedItem;
+                selectedItem = holder.getAdapterPosition();
+                notifyItemChanged(previousSelected);
+                notifyItemChanged(selectedItem);
+            }
+            listener.onItemSelected();
+            return true;
+        });
+
+        holder.itemView.setOnClickListener(v -> {
+            if (selectedItem != RecyclerView.NO_POSITION && selectedItem != holder.getAdapterPosition()) {
+                int previousSelected = selectedItem;
+                selectedItem = holder.getAdapterPosition();
+                notifyItemChanged(previousSelected);
+                notifyItemChanged(selectedItem);
+            }
+        });
+
+        int color;
+        if (selectedItem == holder.getAdapterPosition()) {
+            color = ContextCompat.getColor(ctx, R.color.selected);
+        } else {
+            color = ContextCompat.getColor(ctx, R.color.default_background);
+        }
+        holder.itemView.setBackgroundTintList(ColorStateList.valueOf(color));
+    }
+
+    public void unselectAll() {
+        if (selectedItem != RecyclerView.NO_POSITION) {
+            int old      = selectedItem;
+            selectedItem = RecyclerView.NO_POSITION;
+            notifyItemChanged(old);
+        }
     }
 
     @Override

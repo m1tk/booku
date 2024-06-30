@@ -3,4 +3,20 @@
     <string name="splash_screen_logo_desc">Splash screen icon</string>
     <string name="action_settings">Settings</string>
     <string name="action_add">Add</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_delete">Delete</string>
+
+    <string name="add_book">Add Book</string>
+    <string name="edit_book">Edit Book</string>
+    <string name="add_isbn">ISBN</string>
+    <string name="add_name">Name</string>
+    <string name="add_button">Add</string>
+    <string name="edit_button">Edit</string>
+
+    <string name="empty_book_name">Book name must no be empty</string>
+    <string name="empty_book_isbn">Book ISBN must no be empty</string>
+    <string name="invalid_book_isbn">Book has invalid ISBN</string>
+    <string name="isbn_exists">Book with ISBN %s already exists</string>
+    <string name="book_added">Book with ISBN %s added</string>
+    <string name="book_edited">Book with ISBN %s edited</string>
 </resources>

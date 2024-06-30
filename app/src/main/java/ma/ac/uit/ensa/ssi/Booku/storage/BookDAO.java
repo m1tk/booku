@@ -2,6 +2,7 @@ package ma.ac.uit.ensa.ssi.Booku.storage;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
@@ -12,7 +13,7 @@ import java.util.List;
 
 import ma.ac.uit.ensa.ssi.Booku.model.Book;
 
-public class bookDAO {
+public class BookDAO {
     public Database sdb;
 
     static final String TABLE_NAME  = "book";
@@ -20,9 +21,11 @@ public class bookDAO {
     static final String COLUMN_ISBN = "isbn";
     static final String COLUMN_NAME = "name";
 
-    public bookDAO(Database db) {
-        this.sdb = db;
+    public BookDAO(Context ctx) {
+        this.sdb = new Database(ctx);
     }
+
+    public void close() { this.sdb.close(); }
 
     public long addBook(Book book) throws DatabaseError {
         SQLiteDatabase db = sdb.get_write();
@@ -100,7 +103,7 @@ public class bookDAO {
         SQLiteDatabase db   = sdb.getReadableDatabase();
         List<Book> bookList = new ArrayList<>();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY ID DESC", null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -108,7 +111,7 @@ public class bookDAO {
                 String isbn = cursor.getString(cursor.getColumnIndex(COLUMN_ISBN));
                 String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
 
-                Book book = new Book(id, isbn, name);
+                Book book = new Book(id, name, isbn);
                 bookList.add(book);
             } while (cursor.moveToNext());
         }

@@ -21,6 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.AddBookActivity"
+            android:label="@string/add_book" />
+        <activity
+            android:name=".ui.EditBookActivity"
+            android:label="@string/edit_book" />
     </application>
 
 </manifest>

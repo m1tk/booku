@@ -1,7 +1,9 @@
 package ma.ac.uit.ensa.ssi.Booku.model;
 
+import java.io.Serializable;
+
 // No record :/
-public class Book {
+public class Book implements Serializable {
     private Long id;
     private String name;
     private String isbn;
